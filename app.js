@@ -97,6 +97,35 @@ app.post("/create", async (req, res) => {
   // })
 });
 
+//Update Blog API
+app.patch("/blogs/:id", async (req, res) => {
+  const id = req.params.id;
+  const title = req.body.title;
+  const subTitle = req.body.subTitle;
+  const description = req.body.description;
+
+  await Blog.findByIdAndUpdate(id, {
+    title: title,
+    subTitle: subTitle,
+    description: description,
+  });
+  res.json({
+    status: 201,
+    message: "Blog updated successfully",
+  });
+});
+
+//Delete Blog API
+app.delete("/blogs/:id", async (req, res) => {
+  const id = req.params.id;
+
+  await Blog.findByIdAndDelete(id);
+  res.json({
+    status: 201,
+    message: "Blog Deleted successfully",
+  });
+});
+
 app.listen(3000, (req, res) => {
   console.log("Project Successfully runs at 3000.");
 });
