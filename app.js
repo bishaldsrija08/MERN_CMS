@@ -20,8 +20,8 @@ connectDatabase();
 
 // Get API -> /
 app.get("/", (req, res) => {
-  res.json({
-    status: 200,
+  res.status(200).json({
+    // status: 200,
     message: "I'm from home page.",
   });
 });
