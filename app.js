@@ -1,9 +1,15 @@
 const mongoose = require("mongoose");
 const { connectDatabase } = require("./database/database");
 const Blog = require("./model/blogModel");
+const cors = require("cors")
 
+//Using Express
 const express = require("express");
 const app = express();
+
+app.use(cors({
+  origin: "http://localhost:5173"
+}))
 
 //Form bata ako data buj vaneko talako linele
 app.use(express.json());
@@ -26,15 +32,15 @@ app.get("/blogs", async (req, res) => {
   const blogs = await Blog.find(); //findle arrayma data return garxa - array vitra object auxa
   // check if blogs contains data or not
   if (blogs.length == 0) {
-    res.json({
-      status: 404,
+    res.status(404).json({
+      // status: 404,
       message: "There's no blogs to show!",
     });
   } else {
-    res.json({
-      status: 201,
+    res.status(200).json({
+      // sttus: 200,
       message: "All blogs fetch successfully!",
-      data: blogs,
+      blogs: blogs,
     });
   }
 });
@@ -60,15 +66,15 @@ app.get("/blogs/:id", async (req, res) => {
   //       });
   //   }
   if (blogs.length == 0) {
-    res.json({
-      status: 404,
+    res.status(404).json({
+      // status: 404,
       message: "No blogs found! Please try correct URL",
     });
   } else {
-    res.json({
-      status: 201,
+    res.status(200).json({
+      // status: 200,
       message: "Blog fetch successfylly!",
-      data: blogs,
+      blogs: blogs,
     });
   }
 });
@@ -86,8 +92,8 @@ app.post("/create", async (req, res) => {
     description: description,
   });
 
-  res.json({
-    status: 201,
+  res.status(200).json({
+    // status: 200,
     message: "Blog created successfully",
   });
 
@@ -109,8 +115,8 @@ app.patch("/blogs/:id", async (req, res) => {
     subTitle: subTitle,
     description: description,
   });
-  res.json({
-    status: 201,
+  res.status(200).json({
+    // status: 200,
     message: "Blog updated successfully",
   });
 });
@@ -120,8 +126,8 @@ app.delete("/blogs/:id", async (req, res) => {
   const id = req.params.id;
 
   await Blog.findByIdAndDelete(id);
-  res.json({
-    status: 201,
+  res.status(200).json({
+    // status: 200,
     message: "Blog Deleted successfully",
   });
 });
