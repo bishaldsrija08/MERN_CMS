@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 const { connectDatabase } = require("./database/database");
 const Blog = require("./model/blogModel");
-const cors = require("cors")
+const cors = require("cors");
 
 //Using Express
 const express = require("express");
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173"
-}))
+//Cross-origin resource sharing (CORS) is a mechanism that allows a web page to access resources from a different domain than the one that served the page.
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 //Form bata ako data buj vaneko talako linele
 app.use(express.json());
@@ -50,7 +53,7 @@ app.get("/blogs/:id", async (req, res) => {
   // console.log(req.params.id)
   const id = req.params.id;
   //const{id} = req.params => Alternative
-  const blogs = await Blog.find({ _id: id });
+  const blog = await Blog.find({ _id: id });
   // Alternative
   //   const blogs = await Blog.findById(id) //FindById returns data in the form of object.
   //   if(blogs){
@@ -65,7 +68,7 @@ app.get("/blogs/:id", async (req, res) => {
   //         message: "No blogs found! Please try correct URL",
   //       });
   //   }
-  if (blogs.length == 0) {
+  if (blog.length == 0) {
     res.status(404).json({
       // status: 404,
       message: "No blogs found! Please try correct URL",
@@ -74,7 +77,7 @@ app.get("/blogs/:id", async (req, res) => {
     res.status(200).json({
       // status: 200,
       message: "Blog fetch successfylly!",
-      blogs: blogs,
+      blog: blog,
     });
   }
 });
@@ -92,7 +95,7 @@ app.post("/create", async (req, res) => {
     description: description,
   });
 
-  res.status(200).json({
+  res.status(201).json({
     // status: 200,
     message: "Blog created successfully",
   });
